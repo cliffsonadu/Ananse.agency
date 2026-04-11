@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anansé Creative Haus — Coming Soon</title>
+<meta name="description" content="Anansé Creative Haus — A premium production house at the intersection of fashion, commerce, and craft. Warsaw-based. Globally minded. Coming soon.">
+<meta property="og:title" content="Anansé Creative Haus — Coming Soon">
+<meta property="og:description" content="We build culture, not just campaigns. Warsaw-based production house. Coming soon.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ananse.agency">
+<meta name="robots" content="index, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --red:   #8b1a1a;
+  --cream: #ede8df;
+  --black: #070707;
+  --serif: 'Cormorant Garamond', serif;
+  --sans:  'DM Sans', sans-serif;
+}
+
+html, body {
+  width:100%; height:100%;
+  background: var(--black);
+  overflow: hidden;
+  font-family: var(--sans);
+  color: var(--cream);
+  cursor: none;
+}
+
+/* ── CURSOR ── */
+.cursor-dot {
+  position:fixed; width:6px; height:6px;
+  background: var(--red); border-radius:50%;
+  pointer-events:none; z-index:9999;
+  transform:translate(-50%,-50%);
+  will-change: left, top;
+}
+.cursor-ring {
+  position:fixed; width:34px; height:34px;
+  border:0.5px solid rgba(139,26,26,0.6);
+  border-radius:50%; pointer-events:none; z-index:9998;
+  transform:translate(-50%,-50%);
+  transition: width 0.3s, height 0.3s, border-color 0.3s;
+  transition-timing-function: cubic-bezier(0.25,0.46,0.45,0.94);
+  will-change: left, top;
+}
+
+/* ── CANVAS ── */
+canvas {
+  position:fixed; inset:0; z-index:0;
+  opacity:0; animation: fadeC 2s 0.5s ease forwards;
+}
+@keyframes fadeC { to { opacity:1; } }
+
+/* ── GRAIN ── */
+.grain {
+  position:fixed; inset:0; z-index:1;
+  pointer-events:none; opacity:0.03;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px;
+}
+
+/* ── WRAP ── */
+.wrap {
+  position:relative; z-index:10;
+  width:100%; height:100vh;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding:2rem; text-align:center;
+}
+
+/* ── LOGO ── */
+.logo-mark {
+  width:80px; height:auto;
+  margin:0 auto 2.8rem;
+  opacity:0; transform:translateY(22px);
+  animation: riseIn 1.4s 0.9s cubic-bezier(0.25,0.46,0.45,0.94) forwards;
+}
+
+/* ── EYEBROW ── */
+.eyebrow {
+  font-size:9px; letter-spacing:0.36em;
+  text-transform:uppercase; color:var(--red);
+  margin-bottom:2rem;
+  display:flex; align-items:center; justify-content:center; gap:14px;
+  opacity:0; animation: riseIn 1s 1.5s forwards;
+}
+.eyebrow::before, .eyebrow::after {
+  content:''; display:inline-block;
+  width:24px; height:0.5px; background:var(--red);
+}
+
+/* ── HEADLINE ── */
+.headline {
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+  font-weight:300; line-height:1.08;
+  color:var(--cream); margin-bottom:1.6rem;
+  opacity:0; animation: riseIn 1s 1.8s forwards;
+}
+.headline em {
+  font-style:italic;
+  color:rgba(237,232,223,0.25);
+  display:block;
+}
+
+/* ── SUBLINE ── */
+.subline {
+  font-size:12px; letter-spacing:0.06em;
+  color:rgba(237,232,223,0.3); font-weight:300;
+  line-height:1.9; margin-bottom:2.8rem;
+  max-width:380px;
+  opacity:0; animation: riseIn 1s 2.1s forwards;
+}
+
+/* ── THREAD DIVIDER ── */
+.thread-wrap {
+  display:flex; align-items:center; justify-content:center;
+  gap:0; margin-bottom:2.8rem;
+  width:100%; max-width:440px;
+  opacity:0; animation: riseIn 1s 2.3s forwards;
+}
+.thread-node {
+  width:4px; height:4px;
+  border-radius:50%; background:var(--red); flex-shrink:0;
+}
+.thread-line {
+  height:0.5px; flex:1;
+  background:linear-gradient(to right, var(--red), rgba(139,26,26,0.06));
+  transform:scaleX(0); transform-origin:left;
+  animation: drawLine 1.8s 2.8s cubic-bezier(0.77,0,0.18,1) forwards;
+}
+.thread-line.rev {
+  background:linear-gradient(to left, var(--red), rgba(139,26,26,0.06));
+  transform-origin:right;
+  animation: drawLineRev 1.8s 2.8s cubic-bezier(0.77,0,0.18,1) forwards;
+}
+.thread-center {
+  font-family:var(--serif); font-size:10px;
+  letter-spacing:0.28em; text-transform:uppercase;
+  color:rgba(237,232,223,0.2); padding:0 1.4rem;
+  white-space:nowrap;
+}
+
+/* ── NOTIFY ── */
+.notify {
+  opacity:0; animation: riseIn 1s 2.6s forwards;
+  margin-bottom:2.4rem;
+}
+.notify-label {
+  font-size:8px; letter-spacing:0.3em; text-transform:uppercase;
+  color:rgba(237,232,223,0.18); margin-bottom:1rem;
+}
+.notify-form {
+  display:flex; gap:0;
+  border:0.5px solid rgba(237,232,223,0.1);
+  max-width:360px; margin:0 auto;
+  transition:border-color 0.4s;
+}
+.notify-form:focus-within { border-color:rgba(139,26,26,0.5); }
+.notify-input {
+  flex:1; background:transparent; border:none;
+  outline:none; padding:0.85rem 1.2rem;
+  font-size:12px; color:var(--cream);
+  font-family:var(--sans); letter-spacing:0.04em;
+}
+.notify-input::placeholder { color:rgba(237,232,223,0.16); }
+.notify-btn {
+  background:transparent; border:none;
+  border-left:0.5px solid rgba(237,232,223,0.1);
+  padding:0.85rem 1.4rem; cursor:none;
+  color:rgba(237,232,223,0.3);
+  font-size:8px; letter-spacing:0.24em; text-transform:uppercase;
+  font-family:var(--sans);
+  transition:color 0.3s, background 0.3s; white-space:nowrap;
+}
+.notify-btn:hover { color:var(--cream); background:rgba(139,26,26,0.15); }
+
+/* ── SOCIALS ── */
+.socials {
+  display:flex; align-items:center; justify-content:center; gap:1.8rem;
+  opacity:0; animation: riseIn 1s 2.9s forwards;
+}
+.social-link {
+  font-size:9px; letter-spacing:0.2em; text-transform:uppercase;
+  color:rgba(237,232,223,0.18); text-decoration:none;
+  transition:color 0.3s; cursor:none;
+}
+.social-link:hover { color:var(--red); }
+.social-dot { width:2px; height:2px; border-radius:50%; background:rgba(237,232,223,0.1); }
+
+/* ── FOOTER ── */
+.footer-sig {
+  position:fixed; bottom:2rem; left:50%;
+  transform:translateX(-50%);
+  font-size:8px; letter-spacing:0.3em; text-transform:uppercase;
+  color:rgba(237,232,223,0.08); z-index:10; white-space:nowrap;
+  opacity:0; animation: riseIn 1s 3.2s forwards;
+}
+
+/* ── KEYFRAMES ── */
+@keyframes riseIn {
+  from { opacity:0; transform:translateY(18px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes drawLine {
+  from { transform:scaleX(0); } to { transform:scaleX(1); }
+}
+@keyframes drawLineRev {
+  from { transform:scaleX(0); } to { transform:scaleX(1); }
+}
+
+/* ── MOBILE ── */
+@media (max-width:480px) {
+  .logo-mark { width:58px; margin-bottom:2rem; }
+  .headline { font-size:2.2rem; }
+  .subline { font-size:11px; }
+  .thread-center { font-size:9px; letter-spacing:0.14em; padding:0 0.7rem; }
+  .notify-form { max-width:100%; }
+  .socials { gap:1rem; flex-wrap:wrap; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="cd"></div>
+<div class="cursor-ring" id="cr"></div>
+<div class="grain"></div>
+<canvas id="web"></canvas>
+
+<div class="wrap">
+
+  <!-- Real Anansé logo mark — exact SVG from brand files -->
+  <svg class="logo-mark" viewBox="0 0 566.8 336.54" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#f1ede2" d="M289,102.15a5.74,5.74,0,0,1-5.55,4.12h-.09a5.75,5.75,0,0,1-5.55-4.12A141.72,141.72,0,0,0,0,141.7H53.14A88.56,88.56,0,0,1,230,134.61a6.67,6.67,0,0,1-.85,3.71l0,.05a6.48,6.48,0,0,1-5.68,3.33H141.7A141.7,141.7,0,0,0,0,283.4H53.14a88.56,88.56,0,0,1,88.56-88.56h81.71a6.48,6.48,0,0,1,5.68,3.32l0,.05a6.7,6.7,0,0,1,.85,3.71A88.56,88.56,0,0,1,141.7,283.4v53.14A141.76,141.76,0,0,0,277.8,234.38a5.77,5.77,0,0,1,5.55-4.12h.09a5.76,5.76,0,0,1,5.55,4.12A141.72,141.72,0,0,0,566.8,194.84H513.66A88.56,88.56,0,0,1,336.84,202a6.81,6.81,0,0,1,.84-3.82v0a6.51,6.51,0,0,1,5.69-3.35H425.1A141.7,141.7,0,0,0,566.8,53.14H513.66A88.56,88.56,0,0,1,425.1,141.7H343.38a6.48,6.48,0,0,1-5.67-3.33l0-.05a6.5,6.5,0,0,1-.85-3.71A88.56,88.56,0,0,1,425.1,53.14V0A141.77,141.77,0,0,0,289,102.15Z"/>
+  </svg>
+
+  <div class="eyebrow">Warsaw &middot; Worldwide</div>
+
+  <h1 class="headline">
+    Weaving our world.<br>
+    <em>Coming soon.</em>
+  </h1>
+
+  <p class="subline">
+    Anansé Creative Haus is a premium production house<br>
+    built on the art of visual storytelling. We're almost ready.
+  </p>
+
+  <div class="thread-wrap">
+    <div class="thread-node"></div>
+    <div class="thread-line rev"></div>
+    <span class="thread-center">The web is being spun</span>
+    <div class="thread-line"></div>
+    <div class="thread-node"></div>
+  </div>
+
+  <div class="notify">
+    <div class="notify-label">Be the first to know</div>
+    <div class="notify-form">
+      <input class="notify-input" type="email" id="emailInput" placeholder="your@email.com" autocomplete="email">
+      <button class="notify-btn" id="notifyBtn">Notify me</button>
+    </div>
+  </div>
+
+  <div class="socials">
+    <a href="https://instagram.com/ananse.creative" target="_blank" rel="noopener" class="social-link">@ananse.creative</a>
+    <div class="social-dot"></div>
+    <a href="https://instagram.com/cliffsonshotit" target="_blank" rel="noopener" class="social-link">@cliffsonshotit</a>
+    <div class="social-dot"></div>
+    <a href="mailto:info@ananse.agency" class="social-link">info@ananse.agency</a>
+  </div>
+
+</div>
+
+<div class="footer-sig">© 2025 Anansé Creative Haus — Warsaw, Poland</div>
+
+<script>
+/* ── CURSOR ── */
+const cd = document.getElementById('cd');
+const cr = document.getElementById('cr');
+let mx = innerWidth/2, my = innerHeight/2, rx = mx, ry = my;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cd.style.left = mx+'px'; cd.style.top = my+'px';
+});
+(function loop() {
+  rx += (mx-rx)*0.12; ry += (my-ry)*0.12;
+  cr.style.left = rx+'px'; cr.style.top = ry+'px';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a,button,input').forEach(el => {
+  el.addEventListener('mouseenter', () => { cr.style.width='50px'; cr.style.height='50px'; cr.style.borderColor='rgba(139,26,26,0.9)'; });
+  el.addEventListener('mouseleave', () => { cr.style.width='34px'; cr.style.height='34px'; cr.style.borderColor='rgba(139,26,26,0.6)'; });
+});
+
+/* ── SPIDER WEB ── */
+const canvas = document.getElementById('web');
+const ctx    = canvas.getContext('2d');
+const SPOKES = 8;
+const RINGS  = 8;
+let W, H, nodes=[], edges=[], t=0;
+let mouseX=-9999, mouseY=-9999;
+
+document.addEventListener('mousemove', e => { mouseX=e.clientX; mouseY=e.clientY; });
+
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+  buildWeb();
+}
+
+function buildWeb() {
+  nodes=[]; edges=[];
+  const cx=W/2, cy=H/2;
+  /* Make the web large — fill the screen edge to edge */
+  const R = Math.max(W, H) * 0.72;
+
+  /* Centre */
+  nodes.push({ x:cx, y:cy, ox:cx, oy:cy, phase:0, ring:0, spoke:-1 });
+
+  /* Spoke+ring nodes */
+  for (let ri=1; ri<=RINGS; ri++) {
+    const r = (ri/RINGS)*R;
+    for (let si=0; si<SPOKES; si++) {
+      const angle = (si/SPOKES)*Math.PI*2 - Math.PI/2;
+      const jitter = (Math.random()-0.5)*r*0.06;
+      const nx = cx + Math.cos(angle)*(r+jitter);
+      const ny = cy + Math.sin(angle)*(r+jitter);
+      nodes.push({ x:nx, y:ny, ox:nx, oy:ny, phase:Math.random()*Math.PI*2, ring:ri, spoke:si });
+    }
+  }
+
+  /* Spoke edges */
+  for (let si=0; si<SPOKES; si++) {
+    let prev=0;
+    for (let ri=1; ri<=RINGS; ri++) {
+      const curr = 1+(ri-1)*SPOKES+si;
+      edges.push({ a:prev, b:curr, type:'spoke' });
+      prev=curr;
+    }
+  }
+
+  /* Ring edges */
+  for (let ri=1; ri<=RINGS; ri++) {
+    const start=1+(ri-1)*SPOKES;
+    for (let si=0; si<SPOKES; si++) {
+      edges.push({ a:start+si, b:start+(si+1)%SPOKES, type:'ring' });
+    }
+  }
+}
+
+/* Traveling highlight state */
+let hlSpoke=0, hlRing=1;
+
+function draw() {
+  ctx.clearRect(0,0,W,H);
+  t += 0.0035;
+
+  /* Animate nodes */
+  nodes.forEach((n,i) => {
+    if (i===0) return;
+    const amp = 1.5 + n.ring*0.35;
+    n.x = n.ox + Math.cos(t*0.65+n.phase)*amp;
+    n.y = n.oy + Math.sin(t*0.8 +n.phase)*amp;
+    /* Mouse repulsion */
+    const dx=mouseX-n.x, dy=mouseY-n.y;
+    const dist=Math.hypot(dx,dy);
+    if (dist<150 && dist>0) {
+      const f=(1-dist/150)*5;
+      n.ox -= (dx/dist)*f*0.45;
+      n.oy -= (dy/dist)*f*0.45;
+    }
+    n.ox += (n.x-n.ox)*0.005;
+    n.oy += (n.y-n.oy)*0.005;
+  });
+
+  /* ── Draw all edges ── */
+  edges.forEach(e => {
+    const na=nodes[e.a], nb=nodes[e.b];
+    if (!na||!nb) return;
+    ctx.beginPath();
+    ctx.moveTo(na.x, na.y);
+    ctx.lineTo(nb.x, nb.y);
+    if (e.type==='spoke') {
+      ctx.strokeStyle = 'rgba(139,26,26,0.45)';
+      ctx.lineWidth   = 0.8;
+    } else {
+      ctx.strokeStyle = 'rgba(237,232,223,0.14)';
+      ctx.lineWidth   = 0.6;
+    }
+    ctx.stroke();
+  });
+
+  /* ── Traveling silk highlight — bright thread crawling the web ── */
+  const crawlSpeed = t * 1.4;
+  const cSpoke = Math.floor(crawlSpeed % SPOKES);
+  const cRing  = Math.floor((crawlSpeed*1.5) % RINGS) + 1;
+
+  /* Highlight one full spoke */
+  const spokeStart = 0;
+  const spokeEnd   = 1+(RINGS-1)*SPOKES+cSpoke;
+  let prev = 0;
+  for (let ri=1; ri<=RINGS; ri++) {
+    const curr = 1+(ri-1)*SPOKES+cSpoke;
+    const na=nodes[prev], nb=nodes[curr];
+    if (na&&nb) {
+      ctx.beginPath(); ctx.moveTo(na.x,na.y); ctx.lineTo(nb.x,nb.y);
+      ctx.strokeStyle='rgba(139,26,26,0.95)';
+      ctx.lineWidth=1.5; ctx.stroke();
+    }
+    prev=curr;
+  }
+
+  /* Highlight one full ring */
+  const ringStart=1+(cRing-1)*SPOKES;
+  for (let si=0; si<SPOKES; si++) {
+    const na=nodes[ringStart+si], nb=nodes[ringStart+(si+1)%SPOKES];
+    if (na&&nb) {
+      ctx.beginPath(); ctx.moveTo(na.x,na.y); ctx.lineTo(nb.x,nb.y);
+      ctx.strokeStyle='rgba(237,232,223,0.55)';
+      ctx.lineWidth=1.2; ctx.stroke();
+    }
+  }
+
+  /* ── Centre glow ── */
+  const pulse = 0.5+0.5*Math.sin(t*2.2);
+  const gr=ctx.createRadialGradient(nodes[0].x,nodes[0].y,0,nodes[0].x,nodes[0].y,18+pulse*10);
+  gr.addColorStop(0,'rgba(139,26,26,0.8)');
+  gr.addColorStop(1,'rgba(139,26,26,0)');
+  ctx.beginPath(); ctx.arc(nodes[0].x,nodes[0].y,28+pulse*10,0,Math.PI*2);
+  ctx.fillStyle=gr; ctx.fill();
+
+  /* ── Draw nodes ── */
+  nodes.forEach((n,i) => {
+    ctx.beginPath();
+    if (i===0) {
+      ctx.arc(n.x,n.y,3.5,0,Math.PI*2);
+      ctx.fillStyle='rgba(139,26,26,1)';
+    } else {
+      ctx.arc(n.x,n.y,1.5,0,Math.PI*2);
+      ctx.fillStyle=`rgba(237,232,223,${0.25+n.ring*0.05})`;
+    }
+    ctx.fill();
+  });
+
+  requestAnimationFrame(draw);
+}
+
+resize();
+window.addEventListener('resize', resize);
+draw();
+
+/* ── NOTIFY ── */
+function handleNotify() {
+  const input=document.getElementById('emailInput');
+  const btn  =document.getElementById('notifyBtn');
+  const val  =input.value.trim();
+  if (!val||!val.includes('@')||!val.includes('.')) {
+    input.style.outline='0.5px solid rgba(139,26,26,0.7)';
+    input.focus(); return;
+  }
+  input.value=''; input.style.outline='';
+  input.placeholder="You're on the list ✦";
+  input.style.color='rgba(139,26,26,0.9)';
+  btn.textContent='Done ✦';
+  btn.style.color='rgba(139,26,26,0.9)';
+  setTimeout(() => {
+    input.style.color=''; input.placeholder='your@email.com';
+    btn.textContent='Notify me'; btn.style.color='';
+  }, 4000);
+}
+document.getElementById('notifyBtn').addEventListener('click', handleNotify);
+document.getElementById('emailInput').addEventListener('keydown', e => { if(e.key==='Enter') handleNotify(); });
+</script>
+</body>
+</html>
