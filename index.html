@@ -91,8 +91,13 @@ canvas {
   width:76px; height:auto;
   margin:0 auto 2.8rem;
   opacity:0; transform:translateY(22px);
-  animation:riseIn 1.4s 1.2s cubic-bezier(0.25,0.46,0.45,0.94) forwards;
+  animation:riseIn 1.4s 1.2s cubic-bezier(0.25,0.46,0.45,0.94) forwards,
+            breathe 3s 2.6s ease-in-out infinite;
   filter: drop-shadow(0 0 24px rgba(139,26,26,0.4));
+}
+@keyframes breathe {
+  0%,100% { transform:scale(1);    filter:drop-shadow(0 0 18px rgba(139,26,26,0.3)); }
+  50%      { transform:scale(1.12); filter:drop-shadow(0 0 32px rgba(139,26,26,0.6)); }
 }
 
 /* ── EYEBROW ── */
@@ -117,10 +122,11 @@ canvas {
 }
 .headline em { font-style:italic; color:rgba(237,232,223,0.25); display:block; }
 
+
 /* ── SUBLINE ── */
 .subline {
   font-size:12px; letter-spacing:0.06em;
-  color:rgba(237,232,223,0.3); font-weight:300;
+  color:rgba(237,232,223,0.72); font-weight:300;
   line-height:1.9; margin-bottom:2.8rem; max-width:380px;
   opacity:0; animation:riseIn 1s 2.4s forwards;
 }
@@ -154,11 +160,11 @@ canvas {
 .notify { opacity:0; animation:riseIn 1s 2.9s forwards; margin-bottom:2.4rem; }
 .notify-label {
   font-size:8px; letter-spacing:0.3em; text-transform:uppercase;
-  color:rgba(237,232,223,0.18); margin-bottom:1rem;
+  color:rgba(237,232,223,0.65); margin-bottom:1rem;
 }
 .notify-form {
   display:flex; gap:0;
-  border:0.5px solid rgba(237,232,223,0.1);
+  border:0.5px solid rgba(237,232,223,0.28);
   max-width:360px; margin:0 auto; transition:border-color 0.4s;
 }
 .notify-form:focus-within { border-color:rgba(139,26,26,0.5); }
@@ -167,12 +173,12 @@ canvas {
   padding:0.85rem 1.2rem; font-size:12px; color:var(--cream);
   font-family:var(--sans); letter-spacing:0.04em;
 }
-.notify-input::placeholder { color:rgba(237,232,223,0.16); }
+.notify-input::placeholder { color:rgba(237,232,223,0.45); }
 .notify-btn {
   background:transparent; border:none;
-  border-left:0.5px solid rgba(237,232,223,0.1);
+  border-left:0.5px solid rgba(237,232,223,0.28);
   padding:0.85rem 1.4rem; cursor:none;
-  color:rgba(237,232,223,0.3);
+  color:rgba(237,232,223,0.65);
   font-size:8px; letter-spacing:0.24em; text-transform:uppercase;
   font-family:var(--sans); transition:color 0.3s, background 0.3s; white-space:nowrap;
 }
@@ -185,17 +191,18 @@ canvas {
 }
 .social-link {
   font-size:9px; letter-spacing:0.2em; text-transform:uppercase;
-  color:rgba(237,232,223,0.2); text-decoration:none;
+  color:rgba(237,232,223,0.6); text-decoration:none;
   transition:color 0.3s; cursor:none;
 }
-.social-link:hover { color:var(--red); }
-.social-dot { width:2px; height:2px; border-radius:50%; background:rgba(237,232,223,0.1); }
+.social-link:hover { color:var(--cream); }
+.social-dot { width:2px; height:2px; border-radius:50%; background:rgba(237,232,223,0.35); }
 
 /* ── FOOTER ── */
 .footer-sig {
   position:fixed; bottom:2rem; left:50%; transform:translateX(-50%);
   font-size:8px; letter-spacing:0.3em; text-transform:uppercase;
-  color:rgba(237,232,223,0.08); z-index:10; white-space:nowrap;
+  color:rgba(237,232,223,0.4); z-index:10;
+  white-space:nowrap; width:max-content;
   opacity:0; animation:riseIn 1s 3.6s forwards;
 }
 
@@ -262,8 +269,6 @@ canvas {
 
   <div class="socials">
     <a href="https://instagram.com/ananse.creative" target="_blank" rel="noopener" class="social-link">@ananse.creative</a>
-    <div class="social-dot"></div>
-    <a href="https://instagram.com/cliffsonshotit" target="_blank" rel="noopener" class="social-link">@cliffsonshotit</a>
     <div class="social-dot"></div>
     <a href="mailto:info@ananse.agency" class="social-link">info@ananse.agency</a>
   </div>
